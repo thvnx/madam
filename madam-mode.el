@@ -1,4 +1,8 @@
-;;; Reserved words
+;;; madam-mode.el --- A major-mode for editing Ada source code.
+
+;;; Code:
+
+;; reserved words
 (setq ada83-keywords
       '(
         "abort" "abs" "accept" "access" "all" "and" "array" "at"
@@ -35,6 +39,10 @@
 
 (setq ada22-keywords '("parallel"))
 
+;; aspects (TODO list all aspects or use a regexp?)
+(setq ada-aspects '("Unreferenced"))
+
+;; generate regex string for each category of keywords
 (setq madam-keywords-regexp
       (regexp-opt (append
                    ada83-keywords
@@ -43,18 +51,17 @@
                    ada12-keywords
                    ada22-keywords)
                   'words))
-
-;;; Aspects
-(setq ada-aspects '("Unreferenced"))
 (setq madam-aspects-regexp (regexp-opt ada-aspects 'words))
 
+;; create the list for font-lock, give a particular face for each category of
+;; keywords
 (setq madam-font-lock-keywords
       `(
         (,madam-keywords-regexp . font-lock-keyword-face)
         (,madam-aspects-regexp . font-lock-preprocessor-face)
         ))
 
-;;; Syntax table
+;; syntax table
 (defconst madam-mode-syntax-table
   (let ((table (make-syntax-table)))
     ;; " is a string delimiter
@@ -70,7 +77,7 @@
   (setq font-lock-defaults '(madam-font-lock-keywords))
   (font-lock-fontify-buffer))
 
-;;; Free stuff
+;; clear memory. no longer needed
 (setq ada83-keywords nil)
 (setq ada95-keywords nil)
 (setq ada05-keywords nil)
